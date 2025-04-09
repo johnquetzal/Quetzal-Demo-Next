@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { useUser } from '@/lib/auth';
-import { updateAccount } from '@/app/(login)/actions';
 
 type ActionState = {
   error?: string;
@@ -94,3 +93,7 @@ export default function GeneralPage() {
     </section>
   );
 }
+function updateAccount(state: ActionState, payload: FormData): ActionState | Promise<ActionState> {
+    throw new Error('Function not implemented.');
+}
+
