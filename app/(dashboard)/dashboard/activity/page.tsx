@@ -1,3 +1,4 @@
+import { useI18n } from "@quetzallabs/i18n-next";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Settings,
@@ -28,57 +29,58 @@ const iconMap: Record<ActivityType, LucideIcon> = {
 };
 
 function getRelativeTime(date: Date) {
+  const { t } = useI18n();
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-  if (diffInSeconds < 60) return 'just now';
+  if (diffInSeconds < 60) return t("just now");
   if (diffInSeconds < 3600)
-    return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    return t("{dynamic1} minutes ago", {dynamic1: Math.floor(diffInSeconds / 60)});
   if (diffInSeconds < 86400)
-    return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    return t("{dynamic1} hours ago", {dynamic1: Math.floor(diffInSeconds / 3600)});
   if (diffInSeconds < 604800)
-    return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    return t("{dynamic1} days ago", {dynamic1: Math.floor(diffInSeconds / 86400)});
   return date.toLocaleDateString();
 }
 
 function formatAction(action: ActivityType): string {
+  const { t } = useI18n();
   switch (action) {
     case ActivityType.SIGN_UP:
-      return 'You signed up';
+      return t("You signed up");
     case ActivityType.SIGN_IN:
-      return 'You signed in';
+      return t("You signed in");
     case ActivityType.SIGN_OUT:
-      return 'You signed out';
+      return t("You signed out");
     case ActivityType.UPDATE_PASSWORD:
-      return 'You changed your password';
+      return t("You changed your password");
     case ActivityType.DELETE_ACCOUNT:
-      return 'You deleted your account';
+      return t("You deleted your account");
     case ActivityType.UPDATE_ACCOUNT:
-      return 'You updated your account';
+      return t("You updated your account");
     case ActivityType.CREATE_TEAM:
-      return 'You created a new team';
+      return t("You created a new team");
     case ActivityType.REMOVE_TEAM_MEMBER:
-      return 'You removed a team member';
+      return t("You removed a team member");
     case ActivityType.INVITE_TEAM_MEMBER:
-      return 'You invited a team member';
+      return t("You invited a team member");
     case ActivityType.ACCEPT_INVITATION:
-      return 'You accepted an invitation';
+      return t("You accepted an invitation");
     default:
-      return 'Unknown action occurred';
+      return t("Unknown action occurred");
   }
 }
 
 export default async function ActivityPage() {
+  const { t } = useI18n();
   const logs = await getActivityLogs();
 
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
-        Activity Log
-      </h1>
+      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">{t("Activity Log")}</h1>
       <Card>
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
+          <CardTitle>{t("Recent Activity")}</CardTitle>
         </CardHeader>
         <CardContent>
           {logs.length > 0 ? (
@@ -97,7 +99,7 @@ export default async function ActivityPage() {
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900">
                         {formattedAction}
-                        {log.ipAddress && ` from IP ${log.ipAddress}`}
+                        {log.ipAddress && t("from IP {dynamic1}", {dynamic1: log.ipAddress})}
                       </p>
                       <p className="text-xs text-gray-500">
                         {getRelativeTime(new Date(log.timestamp))}
@@ -110,13 +112,8 @@ export default async function ActivityPage() {
           ) : (
             <div className="flex flex-col items-center justify-center text-center py-12">
               <AlertCircle className="h-12 w-12 text-orange-500 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                No activity yet
-              </h3>
-              <p className="text-sm text-gray-500 max-w-sm">
-                When you perform actions like signing in or updating your
-                account, they'll appear here.
-              </p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t("No activity yet")}</h3>
+              <p className="text-sm text-gray-500 max-w-sm">{t("When you perform actions like signing in or updating your account, they'll appear here.")}</p>
             </div>
           )}
         </CardContent>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useI18n } from "@quetzallabs/i18n-next";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -21,8 +22,9 @@ type ActionState = {
 };
 
 export function InviteTeamMember() {
+  const { t } = useI18n();
   const { user } = useUser();
-  const isOwner = user?.role === 'owner';
+  const isOwner = user?.role === t("owner");
   const [inviteState, inviteAction, isInvitePending] = useActionState<
     ActionState,
     FormData
@@ -31,23 +33,23 @@ export function InviteTeamMember() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Invite Team Member</CardTitle>
+        <CardTitle>{t("Invite Team Member")}</CardTitle>
       </CardHeader>
       <CardContent>
         <form action={inviteAction} className="space-y-4">
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("Email")}</Label>
             <Input
               id="email"
               name="email"
               type="email"
-              placeholder="Enter email"
+              placeholder={t("Enter email")}
               required
               disabled={!isOwner}
             />
           </div>
           <div>
-            <Label>Role</Label>
+            <Label>{t("Role")}</Label>
             <RadioGroup
               defaultValue="member"
               name="role"
@@ -56,11 +58,11 @@ export function InviteTeamMember() {
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="member" id="member" />
-                <Label htmlFor="member">Member</Label>
+                <Label htmlFor="member">{t("Member")}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="owner" id="owner" />
-                <Label htmlFor="owner">Owner</Label>
+                <Label htmlFor="owner">{t("Owner")}</Label>
               </div>
             </RadioGroup>
           </div>
@@ -91,9 +93,7 @@ export function InviteTeamMember() {
       </CardContent>
       {!isOwner && (
         <CardFooter>
-          <p className="text-sm text-muted-foreground">
-            You must be a team owner to invite new members.
-          </p>
+          <p className="text-sm text-muted-foreground">{t("You must be a team owner to invite new members.")}</p>
         </CardFooter>
       )}
     </Card>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useI18n } from "@quetzallabs/i18n-next";
 import { startTransition, useActionState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +15,7 @@ type ActionState = {
 };
 
 export default function GeneralPage() {
+  const { t } = useI18n();
   const { user } = useUser();
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
     updateAccount,
@@ -36,33 +38,31 @@ export default function GeneralPage() {
 
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
-        General Settings
-      </h1>
+      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">{t("General Settings")}</h1>
 
       <Card>
         <CardHeader>
-          <CardTitle>Account Information</CardTitle>
+          <CardTitle>{t("Account Information")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{t("Name")}</Label>
               <Input
                 id="name"
                 name="name"
-                placeholder="Enter your name"
+                placeholder={t("Enter your name")}
                 defaultValue={user?.name || ''}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("Email")}</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t("Enter your email")}
                 defaultValue={user?.email || ''}
                 required
               />
@@ -84,7 +84,7 @@ export default function GeneralPage() {
                   Saving...
                 </>
               ) : (
-                'Save Changes'
+                t("Save Changes")
               )}
             </Button>
           </form>

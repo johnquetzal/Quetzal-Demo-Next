@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@quetzallabs/i18n-next";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,14 +12,15 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { t } = useI18n();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
-    { href: "/dashboard", icon: Users, label: "Team" },
-    { href: "/dashboard/general", icon: Settings, label: "General" },
-    { href: "/dashboard/activity", icon: Activity, label: "Activity" },
-    { href: "/dashboard/security", icon: Shield, label: "Security" },
+    { href: t("/dashboard"), icon: Users, label: t("Team") },
+    { href: t("/dashboard/general"), icon: Settings, label: t("General") },
+    { href: t("/dashboard/activity"), icon: Activity, label: t("Activity") },
+    { href: t("/dashboard/security"), icon: Shield, label: t("Security") },
   ];
 
   return (

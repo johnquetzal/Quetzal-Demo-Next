@@ -1,5 +1,6 @@
 'use client';
 
+import { useI18n } from "@quetzallabs/i18n-next";
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,41 +16,38 @@ type ActionState = {
 };
 
 export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
+  const { t } = useI18n();
   const [removeState, removeAction, isRemovePending] = useActionState<
     ActionState,
     FormData
   >(removeTeamMember, { error: '', success: '' });
 
   const getUserDisplayName = (user: Pick<User, 'id' | 'name' | 'email'>) => {
-    return user.name || user.email || 'Unknown User';
+    return user.name || user.email || t("Unknown User");
   };
 
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium mb-6">Team Settings</h1>
+      <h1 className="text-lg lg:text-2xl font-medium mb-6">{t("Team Settings")}</h1>
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle>Team Subscription</CardTitle>
+          <CardTitle>{t("Team Subscription")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
               <div className="mb-4 sm:mb-0">
-                <p className="font-medium">
-                  Current Plan: {teamData.planName || 'Free'}
-                </p>
+                <p className="font-medium">{t("Current Plan: {dynamic1}", {dynamic1: teamData.planName || 'Free'})}</p>
                 <p className="text-sm text-muted-foreground">
                   {teamData.subscriptionStatus === 'active'
-                    ? 'Billed monthly'
+                    ? t("Billed monthly")
                     : teamData.subscriptionStatus === 'trialing'
-                      ? 'Trial period'
-                      : 'No active subscription'}
+                      ? t("Trial period")
+                      : t("No active subscription")}
                 </p>
               </div>
               <form action={customerPortalAction}>
-                <Button type="submit" variant="outline">
-                  Manage Subscription
-                </Button>
+                <Button type="submit" variant="outline">{t("Manage Subscription")}</Button>
               </form>
             </div>
           </div>
@@ -57,7 +55,7 @@ export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
       </Card>
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle>Team Members</CardTitle>
+          <CardTitle>{t("Team Members")}</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-4">
@@ -94,7 +92,7 @@ export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
                       size="sm"
                       disabled={isRemovePending}
                     >
-                      {isRemovePending ? 'Removing...' : 'Remove'}
+                      {isRemovePending ? t("Removing...") : t("Remove")}
                     </Button>
                   </form>
                 ) : null}

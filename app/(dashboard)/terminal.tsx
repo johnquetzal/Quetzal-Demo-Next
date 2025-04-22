@@ -1,15 +1,17 @@
 "use client";
 
+import { useI18n } from "@quetzallabs/i18n-next";
 import { useState, useEffect } from "react";
 import { Copy, Check } from "lucide-react";
 
 export function Terminal() {
+  const { t } = useI18n();
   const [terminalStep, setTerminalStep] = useState(0);
   const [copied, setCopied] = useState(false);
   const terminalSteps = [
-    "npm i @quetzallabs/i18n",
-    "npx quetzal-setup",
-    "npm run dev 🎉",
+    t("npm i @quetzallabs/i18n"),
+    t("npx quetzal-setup"),
+    t("npm run dev 🎉"),
   ];
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export function Terminal() {
           <button
             onClick={copyToClipboard}
             className="text-gray-400 hover:text-white transition-colors"
-            aria-label="Copy to clipboard"
+            aria-label={t("Copy to clipboard")}
           >
             {copied ? (
               <Check className="h-5 w-5" />
